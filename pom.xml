@@ -11,8 +11,8 @@
 	<groupId>ru.quipy</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Tiny Event Sourcing lib</description>
+	<name>Task Management Application</name>
+	<description>Event-Driven Task Management Application (Software Design ITMO)</description>
 	<properties>
 		<java.version>11</java.version>
 		<kotlin.version>1.6.21</kotlin.version>
