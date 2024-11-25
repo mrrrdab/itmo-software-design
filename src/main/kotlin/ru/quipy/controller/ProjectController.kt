@@ -54,4 +54,12 @@ class ProjectController(
 	): TagDeletedEvent {
 		return projectEsService.update(projectId) { it.deleteTag(tagId) }
 	}
+
+	@GetMapping("/{projectId}/users")
+	fun getAllProjectParticipants(@PathVariable projectId: UUID): List<UUID> {
+		val projectState = projectEsService.getState(projectId)
+			?: throw IllegalArgumentException("Project not found")
+		return projectState.users
+	}
+
 }

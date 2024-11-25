@@ -12,7 +12,9 @@ import java.util.UUID
 import javax.annotation.PostConstruct
 
 @Service
-class ProjectViewService(
+class
+
+ProjectViewService(
     private val projectViewRepository: IProjectViewRepository,
     private val subscriptionsManager: AggregateSubscriptionsManager
 ) {
@@ -48,6 +50,12 @@ class ProjectViewService(
         }
         project.title = newTitle
         projectViewRepository.save(project)
+    }
+
+    fun getUsersByProjectId(projectId: UUID): List<UUID> {
+        val project = projectViewRepository.findById(projectId)
+            .orElseThrow { IllegalArgumentException("Project not found") }
+        return project.users
     }
 }
 

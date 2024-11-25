@@ -1,23 +1,25 @@
 package ru.quipy.projections.project
 
-import javax.persistence.Entity
-import javax.persistence.Table
-import javax.persistence.Column
-import javax.persistence.Id
 import java.util.UUID
+import javax.persistence.*
 
 @Entity
 @Table(name = "project_view", schema = "projection")
 data class ProjectViewDomain(
     @Id
-    val id: UUID = UUID.randomUUID(),
+    val id: UUID,
 
     @Column(nullable = false, length = 100)
-    var title: String = "",
+    var title: String,
 
     @Column(nullable = false)
-    val creatorId: UUID = UUID.randomUUID()
+    val creatorId: UUID,
+
+    @ElementCollection
+    @CollectionTable(name = "project_participants", joinColumns = [JoinColumn(name = "project_id")])
+    @Column(name = "user_id")
+    val users: MutableList<UUID> = mutableListOf()
 ) {
-    // Нужен для JPA
     constructor() : this(UUID.randomUUID(), "", UUID.randomUUID())
 }
+
