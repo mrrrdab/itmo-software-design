@@ -8,17 +8,13 @@ import java.util.UUID
 
 interface IProjectViewRepository : JpaRepository<ProjectViewDomain, UUID> {
 
-    // Получение проектов по названию
     fun findByTitle(title: String): List<ProjectViewDomain>
 
-            // Поиск проектов, название которых содержит ключевое слово
     @Query("SELECT p FROM ProjectViewDomain p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     fun findByTitleContaining(keyword: String): List<ProjectViewDomain>
 
-    // Получение проектов по идентификатору создателя
     fun findByCreatorId(creatorId: UUID): List<ProjectViewDomain>
 
-            // Получение проектов по множеству идентификаторов
     @Query("SELECT p FROM ProjectViewDomain p WHERE p.id IN :ids")
     fun findByIds(ids: List<UUID>): List<ProjectViewDomain>
 
