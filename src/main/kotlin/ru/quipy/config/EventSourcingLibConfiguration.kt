@@ -13,7 +13,7 @@ import ru.quipy.api.task.TaskAggregate
 import ru.quipy.logic.user.UserAggregateState
 import ru.quipy.logic.project.ProjectAggregateState
 import ru.quipy.logic.task.TaskAggregateState
-import ru.quipy.projections.AnnotationBasedProjectEventsSubscriber
+import ru.quipy.projections.project.AnnotationBasedProjectEventsSubscriber
 import javax.annotation.PostConstruct
 import java.util.*
 

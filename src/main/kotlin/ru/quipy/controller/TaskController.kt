@@ -1,17 +1,14 @@
 package ru.quipy.controller
 
 import org.springframework.web.bind.annotation.*
-import ru.quipy.api.task.*
 import ru.quipy.core.EventSourcingService
+import ru.quipy.api.task.*
 import ru.quipy.logic.task.*
-import ru.quipy.projections.task.ITaskMetaViewRepository
-import ru.quipy.projections.task.TaskMetaViewEntity
 import java.util.*
 
 @RestController
 @RequestMapping("/tasks")
 class TaskController(
-  val taskRepository: ITaskMetaViewRepository,
   val taskEsService: EventSourcingService<UUID, TaskAggregate, TaskAggregateState>
 ) {
 
@@ -78,10 +75,5 @@ class TaskController(
     return taskEsService.update(taskId) {
       it.updateStatus(statusId)
     }
-  }
-
-  @GetMapping("taskView/{taskId}")
-  fun findById(@PathVariable taskId: UUID): Optional<TaskMetaViewEntity> {
-    return taskRepository.findById(taskId)
   }
 }
