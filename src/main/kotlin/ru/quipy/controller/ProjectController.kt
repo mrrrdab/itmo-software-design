@@ -4,12 +4,15 @@ import org.springframework.web.bind.annotation.*
 import ru.quipy.core.EventSourcingService
 import ru.quipy.api.project.*
 import ru.quipy.logic.project.*
+import ru.quipy.projections.project.interfaces.IProjectViewRepository
+import ru.quipy.projections.user.UserViewDomain
 import java.util.*
 
 @RestController
 @RequestMapping("/projects")
 class ProjectController(
-  val projectEsService: EventSourcingService<UUID, ProjectAggregate, ProjectAggregateState>
+	val projectEsService: EventSourcingService<UUID, ProjectAggregate, ProjectAggregateState>,
+	private val projectRepository: IProjectViewRepository
 ) {
 
 	@PostMapping()
@@ -56,10 +59,8 @@ class ProjectController(
 	}
 
 	@GetMapping("/{projectId}/users")
-	fun getAllProjectParticipants(@PathVariable projectId: UUID): List<UUID> {
-		val projectState = projectEsService.getState(projectId)
-			?: throw IllegalArgumentException("Project not found")
-		return projectState.users
+	fun getAllProjectParticipants(@PathVariable projectId: UUID): List<UserViewDomain> {
+		return projectRepository.findUsersByProjectId(projectId)
 	}
 
 }

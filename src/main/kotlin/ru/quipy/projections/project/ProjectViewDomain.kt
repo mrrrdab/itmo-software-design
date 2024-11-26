@@ -15,7 +15,7 @@ data class ProjectViewDomain(
     @Column(nullable = false)
     val creatorId: UUID,
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "project_participants", joinColumns = [JoinColumn(name = "project_id")])
     @Column(name = "user_id")
     val users: MutableList<UUID> = mutableListOf()

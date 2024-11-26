@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service
 import ru.quipy.api.task.*
 import ru.quipy.core.EventSourcingService
 import ru.quipy.logic.task.TaskAggregateState
-import ru.quipy.projections.ProjectEventsSubscriber
+import ru.quipy.projections.project.ProjectEventsSubscriber
+import ru.quipy.projections.task.interfaces.ITaskMetaViewRepository
 import ru.quipy.streams.AggregateSubscriptionsManager
 import java.util.*
 import javax.annotation.PostConstruct
@@ -70,7 +71,7 @@ class TaskMetaService(
 
     private fun SaveTaskInRepository(taskId: UUID) {
         val task = taskEsService.getState(taskId) ?: throw Exception("task does not exist")
-        val taskMetaEntity = TaskMetaViewEntity(
+        val taskMetaEntity = TaskMetaViewDomain(
             task.getId(),
             task.projectId,
             task.statusId,
