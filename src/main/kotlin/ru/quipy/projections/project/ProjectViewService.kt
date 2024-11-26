@@ -3,9 +3,7 @@ package ru.quipy.projections.project
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import ru.quipy.api.project.ProjectAggregate
-import ru.quipy.api.project.ProjectCreatedEvent
-import ru.quipy.api.project.ProjectTitleUpdatedEvent
+import ru.quipy.api.project.*
 import ru.quipy.projections.project.interfaces.IProjectViewRepository
 import ru.quipy.streams.AggregateSubscriptionsManager
 import java.util.UUID
@@ -28,6 +26,16 @@ ProjectViewService(
                 logger.info("Project created with title: {}", event.title)
             }
 
+            `when`(UserAddedEvent::class) { event ->
+                addUserToProject(event.projectId, event.userId)
+                logger.info("Added user to project: {}", event.name)
+            }
+
+            `when`(UserDeletedEvent::class) { event ->
+                deleteUserFromProject(event.projectId, event.userId)
+                logger.info("Deleted user from project: {}", event.name)
+            }
+
             `when`(ProjectTitleUpdatedEvent::class) { event ->
                 updateProjectTitle(event.projectId, event.title)
                 logger.info("Project updated with new title: {}", event.title)
@@ -41,6 +49,26 @@ ProjectViewService(
             title = title,
             creatorId = creatorId
         )
+
+        project.users.add(creatorId)
+        projectViewRepository.save(project)
+    }
+
+    private fun addUserToProject(projectId: UUID, userId: UUID): Unit {
+        val project = projectViewRepository.findById(projectId).orElseThrow {
+            IllegalArgumentException("Project not found with id: $projectId")
+        }
+
+        project.users.add(userId)
+        projectViewRepository.save(project)
+    }
+
+    private fun deleteUserFromProject(projectId: UUID, userId: UUID): Unit {
+        val project = projectViewRepository.findById(projectId).orElseThrow {
+            IllegalArgumentException("Project not found with id: $projectId")
+        }
+
+        project.users.remove(userId)
         projectViewRepository.save(project)
     }
 

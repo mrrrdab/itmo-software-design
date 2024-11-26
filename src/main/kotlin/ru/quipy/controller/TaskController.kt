@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.*
 import ru.quipy.api.task.*
 import ru.quipy.core.EventSourcingService
 import ru.quipy.logic.task.*
-import ru.quipy.projections.task.ITaskMetaViewRepository
-import ru.quipy.projections.task.TaskMetaViewEntity
+import ru.quipy.projections.task.interfaces.ITaskMetaViewRepository
+import ru.quipy.projections.task.TaskMetaViewDomain
 import java.util.*
 
 @RestController
@@ -81,7 +81,7 @@ class TaskController(
   }
 
   @GetMapping("taskView/{taskId}")
-  fun findById(@PathVariable taskId: UUID): Optional<TaskMetaViewEntity> {
+  fun findById(@PathVariable taskId: UUID): Optional<TaskMetaViewDomain> {
     return taskRepository.findById(taskId)
   }
 }

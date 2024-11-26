@@ -7,7 +7,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "task_meta_view", schema = "projection")
-data class TaskMetaViewEntity(
+data class TaskMetaViewDomain(
     @Id
     val taskId: UUID,
     val projectId: UUID,
